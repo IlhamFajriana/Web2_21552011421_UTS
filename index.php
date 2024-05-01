@@ -1,5 +1,5 @@
 <?php
-// Include semua kelas yang diperlukan
+
 require_once 'Book.php';
 require_once 'Library.php';
 require_once 'ReferenceBook.php';
@@ -98,21 +98,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['remove'])) {
         <ul>
             <?php foreach ($library->getAvailableBooks() as $book): ?>
                 <li><?= $book->getTitle() ?> by <?= $book->getAuthor() ?> (<?= $book->getYear() ?>)
-                    <?php if ($book->getStatus() === 0): ?>
-                        <span class="text-success">(Available)</span>
-                    <?php else: ?>
-                        <span class="text-danger">(Borrowed)</span>
-                    <?php endif; ?>
+                    <span class="text-success">(Available)</span>
                     <form action="index.php" method="post" style="display:inline;">
                         <button type="submit" class="btn btn-success" name="borrow" value="<?= $book->getTitle() ?>" <?= $book->getStatus() === 1 ? 'disabled' : '' ?>>Borrow</button>
                     </form>
                     <form action="index.php" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-primary" name="return" value="<?= $book->getTitle() ?>">Return</button>
-                    </form>
-                    <form action="index.php" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-danger" name="remove" value="<?= $book->getTitle() ?>">Remove</button>
+                        <button type="submit" class="btn btn-danger" name="remove" value="<?= $book->getTitle() ?>">Delete</button>
                     </form>
                 </li>
+            <?php endforeach; ?>
+        </ul>
+        <hr>
+        <h2>Borrowed Books</h2>
+        <ul>
+            <?php foreach ($library->getBooks() as $book): ?>
+                <?php if ($book->getStatus() === 1): ?>
+                    <li><?= $book->getTitle() ?> by <?= $book->getAuthor() ?> (<?= $book->getYear() ?>)
+                        <span class="text-danger">(Borrowed)</span>
+                        <form action="index.php" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-primary" name="return" value="<?= $book->getTitle() ?>">Return</button>
+                        </form>
+                    </li>
+                <?php endif; ?>
             <?php endforeach; ?>
         </ul>
     </div>
