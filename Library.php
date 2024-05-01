@@ -71,7 +71,9 @@ class Library {
             return strcasecmp($a->getAuthor(), $b->getAuthor());
         });
     }
-
+    public function getBooks() {
+      return $this->books;
+    }
     public function removeBook($bookTitle) {
         foreach ($this->books as $key => $book) {
             if (strcasecmp($book->getTitle(), $bookTitle) === 0) {
